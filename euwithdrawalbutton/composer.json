@@ -1,11 +1,11 @@
 {
-  "name": "open-source/euwithdrawalbutton",
+  "name": "richardpwe/euwithdrawalbutton",
   "description": "Open-source PrestaShop module for the EU/German online withdrawal function.",
   "type": "prestashop-module",
   "license": "MIT",
   "authors": [
     {
-      "name": "Richard Weyer & Open Source Contributors"
+      "name": "Richard Weyer and contributors"
     }
   ],
   "require": {
@@ -30,4 +30,3 @@
     "sort-packages": true
   }
 }
-

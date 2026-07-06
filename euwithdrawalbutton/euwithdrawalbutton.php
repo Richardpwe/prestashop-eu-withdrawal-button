@@ -83,7 +83,7 @@ class EuWithdrawalButton extends Module
         $this->name = 'euwithdrawalbutton';
         $this->tab = 'administration';
         $this->version = '0.1.0';
-        $this->author = 'Open Source Contributors';
+        $this->author = 'Richard Weyer and contributors';
         $this->need_instance = 0;
         $this->bootstrap = true;
         $this->ps_versions_compliancy = [

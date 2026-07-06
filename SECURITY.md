@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-This project is currently in early development. Security fixes are provided for the latest public pre-release and the default branch until the first stable `1.0.0` release.
+This project is currently in pre-`1.0.0` release hardening. Security fixes are provided for the default branch and the latest public `0.x` pre-release.
 
 | Version | Supported |
 | ------- | --------- |
@@ -11,7 +11,12 @@ This project is currently in early development. Security fixes are provided for 
 | Older `0.x` pre-releases | No |
 | `< 0.1.0` | No |
 
-After `1.0.0`, this policy will be updated to define supported stable release lines.
+After `1.0.0`, the supported stable line will be:
+
+| Version | Supported |
+| ------- | --------- |
+| `1.x` latest release | Yes |
+| `< 1.0.0` | No |
 
 ## Reporting a Vulnerability
 

@@ -1,0 +1,96 @@
+name: Bug report
+description: Report a reproducible problem with the module.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Do not include personal customer data, order data, access tokens, or shop credentials.
+
+  - type: input
+    id: module-version
+    attributes:
+      label: Module version or commit
+      description: Version, tag, or commit hash where the issue occurs.
+      placeholder: "1.0.0 / 0.x pre-release / commit hash"
+    validations:
+      required: true
+
+  - type: input
+    id: prestashop-version
+    attributes:
+      label: PrestaShop version
+      placeholder: "8.0.5 / 8.1.7 / 8.2.x / 9.x"
+    validations:
+      required: true
+
+  - type: input
+    id: php-version
+    attributes:
+      label: PHP version
+      placeholder: "7.4 / 8.0 / 8.1 / 8.2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Front office withdrawal flow
+        - Guest verification
+        - Email acknowledgement
+        - Back Office configuration
+        - Back Office withdrawal list/detail
+        - Install/uninstall/upgrade
+        - Compatibility
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest reproducible sequence.
+      placeholder: |
+        1. Install module...
+        2. Open...
+        3. Submit...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste relevant sanitized logs or attach screenshots.
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety checklist
+      options:
+        - label: I removed personal customer data, order data, credentials, and tokens.
+          required: true
+        - label: I understand this project does not provide legal advice.
+          required: true

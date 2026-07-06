@@ -1,0 +1,65 @@
+name: Feature request
+description: Suggest a focused improvement for the module.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please keep feature requests focused on technical module behavior. Legal interpretation questions require independent legal review.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What merchant/customer workflow should this improve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the behavior you want.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Front office withdrawal flow
+        - Guest verification
+        - Partial withdrawal
+        - Email templates
+        - Back Office workflow
+        - Compliance self-check
+        - Data retention/GDPR
+        - PrestaShop compatibility
+        - Developer tooling
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Optional, but useful if there are tradeoffs.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Project constraints
+      options:
+        - label: This request does not require SaaS, telemetry, or external paid services.
+          required: true
+        - label: This request does not require automatic refunds, order cancellations, payment-state changes, or return labels by default.
+          required: true
+        - label: I understand legal wording and compliance interpretation require independent legal review.
+          required: true
+

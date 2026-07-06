@@ -28,14 +28,15 @@ jobs:
         working-directory: euwithdrawalbutton
         run: vendor/bin/phpunit
 
-  prestashop-compatibility-placeholder:
-    name: PrestaShop compatibility matrix placeholder
+  compatibility-matrix-documentation:
+    name: Compatibility matrix documentation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Document target matrix
         run: |
-          echo "Version 1.0 target: PrestaShop 8.0, 8.1, 8.2"
-          echo "Experimental early target: PrestaShop 9.x"
-          echo "Milestone 1.2 target: official PrestaShop 9.x support"
+          echo "Documentation-only guardrail."
+          echo "Release 1.0 target: PrestaShop 8.0, 8.1, 8.2."
+          echo "PrestaShop 9.x remains experimental until milestone 1.2."
+          echo "This is not a replacement for real PrestaShop install tests."
 
