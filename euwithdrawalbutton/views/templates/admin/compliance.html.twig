@@ -1,0 +1,37 @@
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">EU Withdrawal Compliance Self-Check</h3>
+    </div>
+    <div class="card-body">
+      <p class="alert alert-warning">This checklist is technical only. It does not replace legal review.</p>
+      <p><a class="btn btn-outline-secondary" href="{{ configuration_url }}">Back to settings</a></p>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Check</th>
+            <th>Status</th>
+            <th>Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for check in checks %}
+            <tr>
+              <td>{{ check.label }}</td>
+              <td><span class="badge badge-{{ check.status == 'pass' ? 'success' : (check.status == 'warning' ? 'warning' : 'danger') }}">{{ check.status }}</span></td>
+              <td>{{ check.message }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <form method="post">
+        <button class="btn btn-outline-danger" type="submit" name="run_anonymization" value="1">Run retention anonymization</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+

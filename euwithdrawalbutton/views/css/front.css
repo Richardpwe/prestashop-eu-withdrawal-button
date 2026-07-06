@@ -1,0 +1,106 @@
+.euwb-link {
+  margin: 1rem 0;
+}
+
+.euwb-link__button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.euwb-link--sticky {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 50;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.euwb-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.euwb-panel,
+.euwb-review {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid #d7d7d7;
+  border-radius: 4px;
+}
+
+.euwb-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.euwb-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.euwb-form input,
+.euwb-form textarea,
+.euwb-form select {
+  max-width: 100%;
+}
+
+.euwb-error {
+  margin-top: 0.35rem;
+  color: #b00020;
+}
+
+.euwb-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.euwb-order-list {
+  padding-left: 1.25rem;
+}
+
+.euwb-order-select {
+  border: 0;
+  background: transparent;
+  color: #2e6ed5;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.euwb-review dl {
+  display: grid;
+  grid-template-columns: minmax(10rem, 16rem) 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.euwb-review dt {
+  font-weight: 700;
+}
+
+.euwb-form--inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .euwb-review dl {
+    display: block;
+  }
+
+  .euwb-review dd {
+    margin-left: 0;
+    margin-bottom: 0.75rem;
+  }
+}
+

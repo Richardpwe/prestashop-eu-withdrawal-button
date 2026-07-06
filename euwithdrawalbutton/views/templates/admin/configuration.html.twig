@@ -1,0 +1,84 @@
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">EU Withdrawal Button</h3>
+    </div>
+    <div class="card-body">
+      <p class="alert alert-warning">This module is a technical implementation aid and not legal advice. Have all wording and retention settings legally reviewed before production use.</p>
+
+      <p>
+        <a class="btn btn-outline-primary" href="{{ withdrawals_url }}">Withdrawal list</a>
+        <a class="btn btn-outline-secondary" href="{{ compliance_url }}">Compliance self-check</a>
+      </p>
+
+      <form method="post">
+        <div class="form-group">
+          <label><input type="checkbox" name="enabled" value="1" {% if settings.enabled %}checked{% endif %}> Enable module for this shop</label>
+        </div>
+
+        <h4>Link positions</h4>
+        <div class="form-group">
+          <label><input type="checkbox" name="footer_enabled" value="1" {% if settings.footer_enabled %}checked{% endif %}> Footer link</label>
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" name="account_enabled" value="1" {% if settings.account_enabled %}checked{% endif %}> Customer account link</label>
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" name="order_detail_enabled" value="1" {% if settings.order_detail_enabled %}checked{% endif %}> Order detail link</label>
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" name="order_confirmation_enabled" value="1" {% if settings.order_confirmation_enabled %}checked{% endif %}> Order confirmation link</label>
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" name="sticky_enabled" value="1" {% if settings.sticky_enabled %}checked{% endif %}> Sticky footer button</label>
+        </div>
+
+        <h4>Language labels and slugs</h4>
+        {% for language in languages %}
+          {% set idLang = language.id_lang %}
+          <fieldset class="border p-3 mb-3">
+            <legend class="w-auto px-2">{{ language.name }}</legend>
+            <div class="form-group">
+              <label>Public button label</label>
+              <input class="form-control" name="link_label_{{ idLang }}" value="{{ settings.labels[idLang].link_label }}">
+            </div>
+            <div class="form-group">
+              <label>Final confirmation label</label>
+              <input class="form-control" name="final_label_{{ idLang }}" value="{{ settings.labels[idLang].final_label }}">
+            </div>
+            <div class="form-group">
+              <label>Friendly slug</label>
+              <input class="form-control" name="slug_{{ idLang }}" value="{{ settings.labels[idLang].slug }}">
+            </div>
+          </fieldset>
+        {% endfor %}
+
+        <h4>Email and data protection</h4>
+        <div class="form-group">
+          <label>Admin notification email</label>
+          <input class="form-control" type="email" name="admin_email" value="{{ settings.admin_email }}">
+        </div>
+        <div class="form-group">
+          <label>Privacy notice URL</label>
+          <input class="form-control" type="url" name="privacy_url" value="{{ settings.privacy_url }}">
+        </div>
+        <div class="form-group">
+          <label>Retention period in days</label>
+          <input class="form-control" type="number" min="0" name="retention_days" value="{{ settings.retention_days }}">
+        </div>
+        <div class="form-group">
+          <label>Configured withdrawal period in days for internal flagging only</label>
+          <input class="form-control" type="number" min="0" name="period_days" value="{{ settings.period_days }}">
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" name="hash_ip" value="1" {% if settings.hash_ip %}checked{% endif %}> Store salted IP/user-agent hashes for abuse prevention</label>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Save</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+

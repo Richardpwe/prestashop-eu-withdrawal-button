@@ -1,0 +1,20 @@
+Guten Tag {customer_name},
+
+wir bestätigen den Eingang Ihrer Widerrufserklärung.
+
+Diese Nachricht bestätigt ausschließlich den Eingang Ihrer Erklärung. Sie enthält keine rechtliche Prüfung oder Annahmeentscheidung.
+
+Interne Referenz: {withdrawal_reference}
+Eingang in UTC: {submitted_at}
+Eingang in Shop-Zeitzone: {submitted_at_timezone}
+
+Vertrag / betroffener Vertragsteil:
+{contract_identification}
+
+Inhalt Ihrer Erklärung:
+{withdrawal_content}
+
+Shop: {shop_name}
+Shop-URL: {shop_url}
+Datenschutzhinweise: {privacy_policy_url}
+

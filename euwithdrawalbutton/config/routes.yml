@@ -1,0 +1,42 @@
+euwithdrawalbutton_configuration:
+  path: /euwithdrawalbutton/configuration
+  methods: [GET, POST]
+  defaults:
+    _controller: 'PrestaShop\Module\EuWithdrawalButton\Controller\Admin\ConfigurationController::indexAction'
+    _legacy_controller: AdminEuWithdrawalButtonConfiguration
+    _legacy_link: AdminEuWithdrawalButtonConfiguration
+
+euwithdrawalbutton_withdrawals:
+  path: /euwithdrawalbutton/withdrawals
+  methods: [GET]
+  defaults:
+    _controller: 'PrestaShop\Module\EuWithdrawalButton\Controller\Admin\WithdrawalController::indexAction'
+    _legacy_controller: AdminEuWithdrawalButtonWithdrawals
+    _legacy_link: AdminEuWithdrawalButtonWithdrawals
+
+euwithdrawalbutton_withdrawal_detail:
+  path: /euwithdrawalbutton/withdrawals/{idWithdrawal}
+  methods: [GET, POST]
+  defaults:
+    _controller: 'PrestaShop\Module\EuWithdrawalButton\Controller\Admin\WithdrawalController::detailAction'
+    _legacy_controller: AdminEuWithdrawalButtonWithdrawalDetail
+    _legacy_link: AdminEuWithdrawalButtonWithdrawalDetail
+  requirements:
+    idWithdrawal: \d+
+
+euwithdrawalbutton_compliance:
+  path: /euwithdrawalbutton/compliance
+  methods: [GET, POST]
+  defaults:
+    _controller: 'PrestaShop\Module\EuWithdrawalButton\Controller\Admin\ComplianceController::indexAction'
+    _legacy_controller: AdminEuWithdrawalButtonCompliance
+    _legacy_link: AdminEuWithdrawalButtonCompliance
+
+euwithdrawalbutton_export:
+  path: /euwithdrawalbutton/withdrawals/export
+  methods: [GET]
+  defaults:
+    _controller: 'PrestaShop\Module\EuWithdrawalButton\Controller\Admin\WithdrawalController::exportAction'
+    _legacy_controller: AdminEuWithdrawalButtonExport
+    _legacy_link: AdminEuWithdrawalButtonExport
+

@@ -1,0 +1,20 @@
+Hello {customer_name},
+
+We confirm receipt of your withdrawal declaration.
+
+This message only confirms receipt of your declaration. It does not contain a legal review or acceptance decision.
+
+Internal reference: {withdrawal_reference}
+Submitted in UTC: {submitted_at}
+Submitted in shop timezone: {submitted_at_timezone}
+
+Contract / affected contract part:
+{contract_identification}
+
+Content of your declaration:
+{withdrawal_content}
+
+Shop: {shop_name}
+Shop URL: {shop_url}
+Privacy notice: {privacy_policy_url}
+

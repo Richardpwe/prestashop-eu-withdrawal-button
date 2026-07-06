@@ -1,0 +1,117 @@
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
+
+{% block content %}
+  <p><a class="btn btn-outline-secondary" href="{{ list_url }}">Back to list</a></p>
+
+  <div class="card mb-3">
+    <div class="card-header">
+      <h3 class="card-header-title">{{ withdrawal.public_reference }}</h3>
+    </div>
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-sm-3">Status</dt><dd class="col-sm-9">{{ withdrawal.status }}</dd>
+        <dt class="col-sm-3">Submitted UTC</dt><dd class="col-sm-9">{{ withdrawal.submitted_at }}</dd>
+        <dt class="col-sm-3">Shop timezone</dt><dd class="col-sm-9">{{ withdrawal.shop_timezone }}</dd>
+        <dt class="col-sm-3">Customer</dt><dd class="col-sm-9">{{ withdrawal.customer_name }} &lt;{{ withdrawal.customer_email }}&gt;</dd>
+        <dt class="col-sm-3">Order reference</dt><dd class="col-sm-9">{{ withdrawal.order_reference }}</dd>
+        <dt class="col-sm-3">Assigned order</dt><dd class="col-sm-9">{{ withdrawal.id_order ?: 'none' }}</dd>
+        <dt class="col-sm-3">Mail status</dt><dd class="col-sm-9">{{ withdrawal.mail_status }}</dd>
+        <dt class="col-sm-3">Manual review</dt><dd class="col-sm-9">{{ withdrawal.manual_review_required ? 'yes' : 'no' }}</dd>
+        <dt class="col-sm-3">Possibly out of period</dt><dd class="col-sm-9">{{ withdrawal.possibly_out_of_period ? 'yes' : 'no' }}</dd>
+      </dl>
+
+      <h4>Declaration snapshot</h4>
+      <pre>{{ withdrawal.declaration_snapshot }}</pre>
+
+      <h4>Items</h4>
+      <table class="table">
+        <thead><tr><th>Order detail</th><th>Product</th><th>Quantity</th><th>Free text</th></tr></thead>
+        <tbody>
+          {% for item in items %}
+            <tr>
+              <td>{{ item.id_order_detail }}</td>
+              <td>{{ item.product_name_snapshot }}</td>
+              <td>{{ item.quantity_requested }}</td>
+              <td>{{ item.free_text_item }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4">No structured items stored.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header"><h3 class="card-header-title">Actions</h3></div>
+    <div class="card-body">
+      <form method="post" class="mb-3">
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-control" name="new_status">
+            {% for status in statuses %}
+              <option value="{{ status }}" {% if withdrawal.status == status %}selected{% endif %}>{{ status }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Internal note</label>
+          <textarea class="form-control" name="note"></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Update status</button>
+      </form>
+
+      <form method="post" class="mb-3">
+        <div class="form-group">
+          <label>Assign order ID manually</label>
+          <input class="form-control" type="number" name="id_order" min="1">
+        </div>
+        <button class="btn btn-outline-primary" type="submit" name="assign_order" value="1">Assign order</button>
+      </form>
+
+      <form method="post">
+        <button class="btn btn-outline-secondary" type="submit" name="resend_acknowledgement" value="1">Resend acknowledgement</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header"><h3 class="card-header-title">Suggested matching orders</h3></div>
+    <div class="card-body">
+      <table class="table">
+        <thead><tr><th>ID</th><th>Reference</th><th>Email</th><th>Date</th></tr></thead>
+        <tbody>
+          {% for order in suggestions %}
+            <tr><td>{{ order.id_order }}</td><td>{{ order.reference }}</td><td>{{ order.email }}</td><td>{{ order.date_add }}</td></tr>
+          {% else %}
+            <tr><td colspan="4">No suggestions.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3 class="card-header-title">Audit log</h3></div>
+    <div class="card-body">
+      <table class="table">
+        <thead><tr><th>Date UTC</th><th>Event</th><th>Old</th><th>New</th><th>Employee</th><th>Note</th></tr></thead>
+        <tbody>
+          {% for log in logs %}
+            <tr>
+              <td>{{ log.created_at }}</td>
+              <td>{{ log.event_type }}</td>
+              <td>{{ log.old_status }}</td>
+              <td>{{ log.new_status }}</td>
+              <td>{{ log.id_employee }}</td>
+              <td>{{ log.note }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="6">No audit entries.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
+

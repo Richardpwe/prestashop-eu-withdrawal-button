@@ -1,0 +1,33 @@
+{
+  "name": "open-source/euwithdrawalbutton",
+  "description": "Open-source PrestaShop module for the EU/German online withdrawal function.",
+  "type": "prestashop-module",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Richard Weyer & Open Source Contributors"
+    }
+  ],
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.6",
+    "friendsofphp/php-cs-fixer": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "PrestaShop\\Module\\EuWithdrawalButton\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PrestaShop\\Module\\EuWithdrawalButton\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "prepend-autoloader": false,
+    "sort-packages": true
+  }
+}
+

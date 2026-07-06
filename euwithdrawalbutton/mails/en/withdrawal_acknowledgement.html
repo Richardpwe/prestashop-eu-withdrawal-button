@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <body>
+    <p>Hello {customer_name},</p>
+    <p>We confirm receipt of your withdrawal declaration.</p>
+    <p>This message only confirms receipt of your declaration. It does not contain a legal review or acceptance decision.</p>
+    <p><strong>Internal reference:</strong> {withdrawal_reference}</p>
+    <p><strong>Submitted in UTC:</strong> {submitted_at}<br>
+    <strong>Submitted in shop timezone:</strong> {submitted_at_timezone}</p>
+    <p><strong>Contract / affected contract part:</strong><br>{contract_identification}</p>
+    <p><strong>Content of your declaration:</strong></p>
+    <pre>{withdrawal_content}</pre>
+    <p>Shop: <a href="{shop_url}">{shop_name}</a></p>
+    <p><a href="{privacy_policy_url}">Privacy notice</a></p>
+  </body>
+</html>
+

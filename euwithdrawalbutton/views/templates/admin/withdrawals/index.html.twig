@@ -1,0 +1,59 @@
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-header-title">EU Withdrawal Declarations</h3>
+    </div>
+    <div class="card-body">
+      <form class="form-inline mb-3" method="get">
+        <select class="form-control mr-2" name="status">
+          <option value="">All statuses</option>
+          {% for status in statuses %}
+            <option value="{{ status }}" {% if filters.status == status %}selected{% endif %}>{{ status }}</option>
+          {% endfor %}
+        </select>
+        <select class="form-control mr-2" name="mail_status">
+          <option value="">All mail states</option>
+          {% for status in mail_statuses %}
+            <option value="{{ status }}" {% if filters.mail_status == status %}selected{% endif %}>{{ status }}</option>
+          {% endfor %}
+        </select>
+        <input class="form-control mr-2" name="customer_email" placeholder="Email" value="{{ filters.customer_email }}">
+        <input class="form-control mr-2" name="order_reference" placeholder="Order reference" value="{{ filters.order_reference }}">
+        <button class="btn btn-primary mr-2" type="submit">Filter</button>
+        <a class="btn btn-outline-secondary" href="{{ export_url }}">CSV export</a>
+      </form>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Status</th>
+            <th>Submitted UTC</th>
+            <th>Email</th>
+            <th>Order reference</th>
+            <th>Mail</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for withdrawal in withdrawals %}
+            <tr>
+              <td>{{ withdrawal.public_reference }}</td>
+              <td>{{ withdrawal.status }}</td>
+              <td>{{ withdrawal.submitted_at }}</td>
+              <td>{{ withdrawal.customer_email }}</td>
+              <td>{{ withdrawal.order_reference }}</td>
+              <td>{{ withdrawal.mail_status }}</td>
+              <td><a class="btn btn-sm btn-outline-primary" href="{{ path('euwithdrawalbutton_withdrawal_detail', {idWithdrawal: withdrawal.id_withdrawal}) }}">View</a></td>
+            </tr>
+          {% else %}
+            <tr><td colspan="7">No withdrawal declarations found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
+

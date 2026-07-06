@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\Module\EuWithdrawalButton\Service\ServiceFactory:
+    public: true
+

@@ -1,0 +1,12 @@
+Eine neue Widerrufserklärung ist eingegangen.
+
+Referenz: {withdrawal_reference}
+Kunde: {customer_name} <{customer_email}>
+Eingang: {submitted_at} / {submitted_at_timezone}
+
+Vertrag / betroffener Vertragsteil:
+{contract_identification}
+
+Inhalt:
+{withdrawal_content}
+

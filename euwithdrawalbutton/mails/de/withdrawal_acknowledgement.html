@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="de">
+  <body>
+    <p>Guten Tag {customer_name},</p>
+    <p>wir bestätigen den Eingang Ihrer Widerrufserklärung.</p>
+    <p>Diese Nachricht bestätigt ausschließlich den Eingang Ihrer Erklärung. Sie enthält keine rechtliche Prüfung oder Annahmeentscheidung.</p>
+    <p><strong>Interne Referenz:</strong> {withdrawal_reference}</p>
+    <p><strong>Eingang in UTC:</strong> {submitted_at}<br>
+    <strong>Eingang in Shop-Zeitzone:</strong> {submitted_at_timezone}</p>
+    <p><strong>Vertrag / betroffener Vertragsteil:</strong><br>{contract_identification}</p>
+    <p><strong>Inhalt Ihrer Erklärung:</strong></p>
+    <pre>{withdrawal_content}</pre>
+    <p>Shop: <a href="{shop_url}">{shop_name}</a></p>
+    <p><a href="{privacy_policy_url}">Datenschutzhinweise</a></p>
+  </body>
+</html>
+

@@ -1,0 +1,7 @@
+Guten Tag {customer_name},
+
+es gibt eine Aktualisierung zu Ihrer Widerrufserklärung mit der Referenz {withdrawal_reference}.
+
+Shop: {shop_name}
+Shop-URL: {shop_url}
+

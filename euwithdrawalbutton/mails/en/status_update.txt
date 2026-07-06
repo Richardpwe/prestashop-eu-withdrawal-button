@@ -1,0 +1,7 @@
+Hello {customer_name},
+
+There is an update for your withdrawal declaration with reference {withdrawal_reference}.
+
+Shop: {shop_name}
+Shop URL: {shop_url}
+

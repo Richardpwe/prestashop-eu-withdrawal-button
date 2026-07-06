@@ -1,0 +1,12 @@
+A new withdrawal declaration has been submitted.
+
+Reference: {withdrawal_reference}
+Customer: {customer_name} <{customer_email}>
+Submitted: {submitted_at} / {submitted_at_timezone}
+
+Contract / affected contract part:
+{contract_identification}
+
+Content:
+{withdrawal_content}
+

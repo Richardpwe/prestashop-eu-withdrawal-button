@@ -1,0 +1,12 @@
+Guten Tag,
+
+für die Bestellung {order_reference} wurde ein Verifizierungslink angefordert.
+
+Wenn Sie diesen Link nicht angefordert haben, können Sie diese Nachricht ignorieren.
+
+Bestellung verifizieren:
+{verification_url}
+
+Shop: {shop_name}
+Shop-URL: {shop_url}
+
