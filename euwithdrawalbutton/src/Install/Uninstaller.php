@@ -17,6 +17,7 @@ final class Uninstaller
 
     public function uninstall()
     {
+        $this->deleteLegacyTabs();
         $this->deleteConfiguration();
 
         return $this->executeSqlFile('uninstall.php');
@@ -64,5 +65,25 @@ final class Uninstaller
             Configuration::deleteByName($key);
         }
     }
-}
 
+    private function deleteLegacyTabs()
+    {
+        $rows = Db::getInstance()->executeS(
+            'SELECT `id_tab` FROM `' . _DB_PREFIX_ . 'tab`
+            WHERE `module` = \'' . pSQL($this->module->name) . '\'
+            OR `class_name` LIKE \'AdminEuWithdrawalButton%\''
+        );
+
+        foreach ($rows ?: [] as $row) {
+            $idTab = (int) $row['id_tab'];
+            if ($idTab <= 0 || !class_exists('Tab')) {
+                continue;
+            }
+
+            $tab = new \Tab($idTab);
+            if (\Validate::isLoadedObject($tab)) {
+                $tab->delete();
+            }
+        }
+    }
+}

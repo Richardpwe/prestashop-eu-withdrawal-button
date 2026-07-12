@@ -49,34 +49,7 @@ class EuWithdrawalButton extends Module
     const CONFIG_HASH_IP = 'EUWB_HASH_IP';
     const CONFIG_COMPATIBILITY_MODE = 'EUWB_COMPATIBILITY_MODE';
 
-    public $tabs = [
-        [
-            'name' => 'EU Withdrawals',
-            'class_name' => 'AdminEuWithdrawalButtonWithdrawals',
-            'route_name' => 'euwithdrawalbutton_withdrawals',
-            'parent_class_name' => 'AdminParentOrders',
-            'wording' => 'EU Withdrawals',
-            'wording_domain' => 'Modules.Euwithdrawalbutton.Admin',
-        ],
-        [
-            'name' => 'EU Withdrawal Settings',
-            'class_name' => 'AdminEuWithdrawalButtonConfiguration',
-            'route_name' => 'euwithdrawalbutton_configuration',
-            'parent_class_name' => 'AdminParentCustomer',
-            'wording' => 'EU Withdrawal Settings',
-            'wording_domain' => 'Modules.Euwithdrawalbutton.Admin',
-            'visible' => false,
-        ],
-        [
-            'name' => 'EU Withdrawal Compliance',
-            'class_name' => 'AdminEuWithdrawalButtonCompliance',
-            'route_name' => 'euwithdrawalbutton_compliance',
-            'parent_class_name' => 'AdminParentCustomer',
-            'wording' => 'EU Withdrawal Compliance',
-            'wording_domain' => 'Modules.Euwithdrawalbutton.Admin',
-            'visible' => false,
-        ],
-    ];
+    public $tabs = [];
 
     public function __construct()
     {
@@ -100,14 +73,22 @@ class EuWithdrawalButton extends Module
 
     public function install()
     {
-        return parent::install()
-            && (new Installer($this))->install()
-            && $this->registerHook('displayHeader')
-            && $this->registerHook('displayFooter')
-            && $this->registerHook('displayCustomerAccount')
-            && $this->registerHook('displayOrderDetail')
-            && $this->registerHook('displayOrderConfirmation')
-            && $this->registerHook('moduleRoutes');
+        if (!parent::install()) {
+            return false;
+        }
+
+        $installed = (new Installer($this))->install();
+
+        if (!$installed) {
+            (new Uninstaller($this))->uninstall();
+            parent::uninstall();
+
+            return false;
+        }
+
+        $this->registerModuleHooks();
+
+        return true;
     }
 
     public function uninstall()
@@ -117,14 +98,38 @@ class EuWithdrawalButton extends Module
 
     public function getContent()
     {
-        $configurationUrl = $this->context->link->getAdminLink('AdminEuWithdrawalButtonConfiguration');
-        if ($configurationUrl) {
-            Tools::redirectAdmin($configurationUrl);
+        $output = '';
+        if (Tools::isSubmit('submitEuWithdrawalButton')) {
+            Configuration::updateValue(self::CONFIG_ENABLED, Tools::getValue('enabled') ? 1 : 0);
+            Configuration::updateValue(self::CONFIG_FOOTER_ENABLED, Tools::getValue('footer_enabled') ? 1 : 0);
+            Configuration::updateValue(self::CONFIG_ACCOUNT_ENABLED, Tools::getValue('account_enabled') ? 1 : 0);
+            Configuration::updateValue(self::CONFIG_ORDER_DETAIL_ENABLED, Tools::getValue('order_detail_enabled') ? 1 : 0);
+            Configuration::updateValue(self::CONFIG_ORDER_CONFIRMATION_ENABLED, Tools::getValue('order_confirmation_enabled') ? 1 : 0);
+            Configuration::updateValue(self::CONFIG_STICKY_ENABLED, Tools::getValue('sticky_enabled') ? 1 : 0);
+            Configuration::updateValue(self::CONFIG_ADMIN_EMAIL, trim((string) Tools::getValue('admin_email')));
+            Configuration::updateValue(self::CONFIG_PRIVACY_URL, trim((string) Tools::getValue('privacy_url')));
+            Configuration::updateValue(self::CONFIG_RETENTION_DAYS, max(0, (int) Tools::getValue('retention_days')));
+
+            $output .= $this->displayConfirmation($this->trans('Settings updated.', [], 'Admin.Notifications.Success'));
         }
 
-        return '<div class="panel"><h3>' . $this->displayName . '</h3>'
-            . '<p>' . $this->trans('This module is installed. Open the EU Withdrawal settings tab to configure it.', [], 'Modules.Euwithdrawalbutton.Admin') . '</p>'
+        $withdrawalUrl = $this->getWithdrawalUrl();
+
+        return $output . '<div class="panel"><h3>' . $this->displayName . '</h3>'
             . '<p class="alert alert-warning">' . $this->trans('This module is a technical implementation aid and not legal advice.', [], 'Modules.Euwithdrawalbutton.Admin') . '</p>'
+            . '<p>' . $this->trans('Public withdrawal URL:', [], 'Modules.Euwithdrawalbutton.Admin') . ' <a href="' . htmlspecialchars($withdrawalUrl, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener">' . htmlspecialchars($withdrawalUrl, ENT_QUOTES, 'UTF-8') . '</a></p>'
+            . '<form method="post">'
+            . $this->renderSwitch('enabled', $this->trans('Enable module', [], 'Modules.Euwithdrawalbutton.Admin'), (bool) Configuration::get(self::CONFIG_ENABLED))
+            . $this->renderSwitch('footer_enabled', $this->trans('Show footer link', [], 'Modules.Euwithdrawalbutton.Admin'), (bool) Configuration::get(self::CONFIG_FOOTER_ENABLED))
+            . $this->renderSwitch('account_enabled', $this->trans('Show customer account link', [], 'Modules.Euwithdrawalbutton.Admin'), (bool) Configuration::get(self::CONFIG_ACCOUNT_ENABLED))
+            . $this->renderSwitch('order_detail_enabled', $this->trans('Show order detail link', [], 'Modules.Euwithdrawalbutton.Admin'), (bool) Configuration::get(self::CONFIG_ORDER_DETAIL_ENABLED))
+            . $this->renderSwitch('order_confirmation_enabled', $this->trans('Show order confirmation link', [], 'Modules.Euwithdrawalbutton.Admin'), (bool) Configuration::get(self::CONFIG_ORDER_CONFIRMATION_ENABLED))
+            . $this->renderSwitch('sticky_enabled', $this->trans('Show sticky button', [], 'Modules.Euwithdrawalbutton.Admin'), (bool) Configuration::get(self::CONFIG_STICKY_ENABLED))
+            . $this->renderTextInput('admin_email', $this->trans('Admin notification email', [], 'Modules.Euwithdrawalbutton.Admin'), (string) Configuration::get(self::CONFIG_ADMIN_EMAIL))
+            . $this->renderTextInput('privacy_url', $this->trans('Privacy policy URL', [], 'Modules.Euwithdrawalbutton.Admin'), (string) Configuration::get(self::CONFIG_PRIVACY_URL))
+            . $this->renderTextInput('retention_days', $this->trans('Retention period in days', [], 'Modules.Euwithdrawalbutton.Admin'), (string) Configuration::get(self::CONFIG_RETENTION_DAYS))
+            . '<button type="submit" name="submitEuWithdrawalButton" class="btn btn-primary">' . $this->trans('Save', [], 'Admin.Actions') . '</button>'
+            . '</form>'
             . '</div>';
     }
 
@@ -256,5 +261,58 @@ class EuWithdrawalButton extends Module
         ]);
 
         return $this->fetch('module:' . $this->name . '/views/templates/front/link.tpl');
+    }
+
+    private function renderSwitch($name, $label, $enabled)
+    {
+        return '<div class="form-group">'
+            . '<label class="control-label col-lg-3">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</label>'
+            . '<div class="col-lg-9">'
+            . '<span class="switch prestashop-switch fixed-width-lg">'
+            . '<input type="radio" name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '" id="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '_on" value="1"' . ($enabled ? ' checked="checked"' : '') . '>'
+            . '<label for="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '_on">' . $this->trans('Yes', [], 'Admin.Global') . '</label>'
+            . '<input type="radio" name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '" id="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '_off" value="0"' . (!$enabled ? ' checked="checked"' : '') . '>'
+            . '<label for="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '_off">' . $this->trans('No', [], 'Admin.Global') . '</label>'
+            . '<a class="slide-button btn"></a>'
+            . '</span>'
+            . '</div>'
+            . '<div class="clearfix"></div>'
+            . '</div>';
+    }
+
+    private function renderTextInput($name, $label, $value)
+    {
+        return '<div class="form-group">'
+            . '<label class="control-label col-lg-3" for="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</label>'
+            . '<div class="col-lg-9">'
+            . '<input class="form-control" type="text" id="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '" name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '" value="' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '">'
+            . '</div>'
+            . '<div class="clearfix"></div>'
+            . '</div>';
+    }
+
+    private function registerModuleHooks()
+    {
+        $hooks = [
+            'displayHeader',
+            'displayFooter',
+            'displayCustomerAccount',
+            'displayOrderDetail',
+            'displayOrderConfirmation',
+            'moduleRoutes',
+        ];
+
+        foreach ($hooks as $hook) {
+            if (!$this->registerHook($hook)) {
+                $this->logInstallWarning('Could not register hook ' . $hook . '.');
+            }
+        }
+    }
+
+    private function logInstallWarning($message)
+    {
+        if (class_exists('PrestaShopLogger')) {
+            \PrestaShopLogger::addLog('[euwithdrawalbutton] ' . $message, 2);
+        }
     }
 }

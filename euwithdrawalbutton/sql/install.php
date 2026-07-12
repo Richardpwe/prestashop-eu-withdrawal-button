@@ -40,10 +40,10 @@ return [
         UNIQUE KEY `uniq_idempotency` (`id_shop`, `idempotency_key_hash`),
         KEY `idx_status_date` (`status`, `submitted_at`),
         KEY `idx_shop_lang` (`id_shop`, `id_lang`),
-        KEY `idx_customer_email` (`customer_email`),
+        KEY `idx_customer_email` (`customer_email`(191)),
         KEY `idx_order_reference` (`order_reference`),
         KEY `idx_id_order` (`id_order`)
-    ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;',
+    ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;',
 
     'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'euwb_withdrawal_item` (
         `id_withdrawal_item` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -58,7 +58,7 @@ return [
         PRIMARY KEY (`id_withdrawal_item`),
         KEY `idx_withdrawal` (`id_withdrawal`),
         KEY `idx_order_detail` (`id_order_detail`)
-    ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;',
+    ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;',
 
     'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'euwb_withdrawal_log` (
         `id_withdrawal_log` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -72,7 +72,7 @@ return [
         PRIMARY KEY (`id_withdrawal_log`),
         KEY `idx_withdrawal_created` (`id_withdrawal`, `created_at`),
         KEY `idx_employee` (`id_employee`)
-    ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;',
+    ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;',
 
     'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'euwb_rate_limit` (
         `id_rate_limit` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -83,5 +83,5 @@ return [
         `attempts` INT UNSIGNED NOT NULL DEFAULT 1,
         PRIMARY KEY (`id_rate_limit`),
         UNIQUE KEY `uniq_window` (`id_shop`, `scope`, `subject_hash`, `window_start`)
-    ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;',
+    ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;',
 ];

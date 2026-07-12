@@ -21,7 +21,9 @@ final class Installer
             return false;
         }
 
-        $this->installDefaultConfiguration();
+        if (!$this->installDefaultConfiguration()) {
+            return false;
+        }
 
         return true;
     }
@@ -33,6 +35,7 @@ final class Installer
 
         foreach ($statements as $statement) {
             if (!Db::getInstance()->execute($statement)) {
+                $this->logInstallError('SQL install failed: ' . Db::getInstance()->getMsgError());
                 return false;
             }
         }
@@ -42,26 +45,48 @@ final class Installer
 
     private function installDefaultConfiguration()
     {
-        Configuration::updateValue(\EuWithdrawalButton::CONFIG_ENABLED, 1);
-        Configuration::updateValue(\EuWithdrawalButton::CONFIG_FOOTER_ENABLED, 1);
-        Configuration::updateValue(\EuWithdrawalButton::CONFIG_ACCOUNT_ENABLED, 1);
-        Configuration::updateValue(\EuWithdrawalButton::CONFIG_ORDER_DETAIL_ENABLED, 1);
-        Configuration::updateValue(\EuWithdrawalButton::CONFIG_ORDER_CONFIRMATION_ENABLED, 1);
-        Configuration::updateValue(\EuWithdrawalButton::CONFIG_STICKY_ENABLED, 0);
-        Configuration::updateValue(\EuWithdrawalButton::CONFIG_ADMIN_EMAIL, (string) Configuration::get('PS_SHOP_EMAIL'));
-        Configuration::updateValue(\EuWithdrawalButton::CONFIG_RETENTION_DAYS, 365);
-        Configuration::updateValue(\EuWithdrawalButton::CONFIG_PRIVACY_URL, '');
-        Configuration::updateValue(\EuWithdrawalButton::CONFIG_HASH_IP, 0);
-        Configuration::updateValue(\EuWithdrawalButton::CONFIG_COMPATIBILITY_MODE, 'ps8_official_ps9_experimental');
-        Configuration::updateValue('EUWB_PERIOD_DAYS', 14);
+        $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_ENABLED, 1);
+        $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_FOOTER_ENABLED, 1);
+        $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_ACCOUNT_ENABLED, 1);
+        $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_ORDER_DETAIL_ENABLED, 1);
+        $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_ORDER_CONFIRMATION_ENABLED, 1);
+        $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_STICKY_ENABLED, 0);
+        $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_ADMIN_EMAIL, (string) Configuration::get('PS_SHOP_EMAIL'));
+        $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_RETENTION_DAYS, 365);
+        $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_PRIVACY_URL, '');
+        $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_HASH_IP, 0);
+        $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_COMPATIBILITY_MODE, 'ps8_official_ps9_experimental');
+        $this->updateConfigurationValue('EUWB_PERIOD_DAYS', 14);
 
         foreach (Language::getLanguages(false) as $language) {
             $idLang = (int) $language['id_lang'];
             $iso = strtolower((string) $language['iso_code']);
-            Configuration::updateValue(\EuWithdrawalButton::CONFIG_LINK_LABEL_PREFIX . $idLang, $iso === 'de' ? 'Vertrag widerrufen' : 'Withdraw from contract');
-            Configuration::updateValue(\EuWithdrawalButton::CONFIG_FINAL_LABEL_PREFIX . $idLang, $iso === 'de' ? 'Widerruf bestätigen' : 'Confirm withdrawal');
-            Configuration::updateValue(\EuWithdrawalButton::CONFIG_SLUG_PREFIX . $idLang, $iso === 'de' ? 'vertrag-widerrufen' : 'withdraw-contract');
+            $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_LINK_LABEL_PREFIX . $idLang, $iso === 'de' ? 'Vertrag widerrufen' : 'Withdraw from contract');
+            $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_FINAL_LABEL_PREFIX . $idLang, $iso === 'de' ? 'Widerruf bestaetigen' : 'Confirm withdrawal');
+            $this->updateConfigurationValue(\EuWithdrawalButton::CONFIG_SLUG_PREFIX . $idLang, $iso === 'de' ? 'vertrag-widerrufen' : 'withdraw-contract');
+        }
+
+        return true;
+    }
+
+    private function updateConfigurationValue($key, $value)
+    {
+        if (!Configuration::updateValue($key, $value)) {
+            $this->logInstallWarning('Could not save configuration key ' . $key . '.');
+        }
+    }
+
+    private function logInstallError($message)
+    {
+        if (class_exists('PrestaShopLogger')) {
+            \PrestaShopLogger::addLog('[euwithdrawalbutton] ' . $message, 3);
+        }
+    }
+
+    private function logInstallWarning($message)
+    {
+        if (class_exists('PrestaShopLogger')) {
+            \PrestaShopLogger::addLog('[euwithdrawalbutton] ' . $message, 2);
         }
     }
 }
-

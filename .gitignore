@@ -2,8 +2,8 @@ vendor/
 composer.lock
 .phpunit.result.cache
 coverage/
+dist/
 .idea
 .agents
 .codex
-
 
