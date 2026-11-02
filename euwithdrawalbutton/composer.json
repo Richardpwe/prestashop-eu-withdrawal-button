@@ -12,7 +12,7 @@
     "php": ">=7.4"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.6",
+    "phpunit/phpunit": "^13.4",
     "friendsofphp/php-cs-fixer": "^3.0"
   },
   "autoload": {
